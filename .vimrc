@@ -1,17 +1,20 @@
 syntax on
 
 set background=dark
-colorscheme slate
+colorscheme BusyBee
 
 set cursorline
 " Default Colors for CursorLine
-highlight CursorLine term=none cterm=none ctermbg=DarkBlue guibg=Grey40
+highlight CursorLine term=none cterm=none ctermbg=Black guibg=Grey40
 
 " Disable CursorLine for Insert mode 
 autocmd InsertEnter * set nocursorline
 
 " turn CursorLine highlight back on for all other modes
 autocmd InsertLeave * set cursorline
+
+map j gj
+map k gk
 
 set expandtab			" make tabs spaces
 set noeb vb t_vb=							" turn off the annoying bell
