@@ -85,7 +85,7 @@ source $ZSH/oh-my-zsh.sh
 
 # homebrew uses git
 ### this is PRIVATE ###
-#export HOMEBREW_GITHUB_API_TOKEN=
+export HOMEBREW_GITHUB_API_TOKEN=""
 
 # aliases 
 alias sl='echo "is spelled ls you drunk bastard"; ls'
@@ -98,6 +98,7 @@ alias status='git status'
 alias commit='git commit'
 alias push='git push'
 alias add='git add'
+
 
 # colors for less?
 man() 
@@ -113,5 +114,9 @@ man()
   man "$@"
 }
 
+# tmux is just awesome
 alias tmux="TERM=screen-256color-bce tmux"
+alias t='tmux'
 
+# for mosh
+LANG=en_US.UTF-8 
