@@ -117,6 +117,7 @@ man()
 # tmux is just awesome
 alias tmux="TERM=screen-256color-bce tmux"
 alias t='tmux'
+I=$(echo $TMUX_PANE | sed 's/[^0-9]*//g')
 
 # for mosh
 LANG=en_US.UTF-8 
