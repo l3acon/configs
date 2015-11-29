@@ -1,6 +1,6 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/mcf/.oh-my-zsh
-export SHELL=/usr/local/bin/zsh
+export ZSH=/home/ub/.oh-my-zsh
+export SHELL=/usr/bin/zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -99,6 +99,8 @@ alias commit='git commit'
 alias push='git push'
 alias add='git add'
 
+# mOre vim
+alias vim='vim -O'
 
 # colors for less?
 man() 
@@ -121,3 +123,12 @@ I=$(echo $TMUX_PANE | sed 's/[^0-9]*//g')
 
 # for mosh
 LANG=en_US.UTF-8 
+
+# linux specific stuff
+UNAME_S=`uname -s`
+if [ $UNAME_S = "Linux" ]; then
+  # make pretty color
+  export TERM=xterm-256color 
+  # capslock becomes ctrl
+  setxkbmap -layout us -option ctrl:nocaps
+fi
