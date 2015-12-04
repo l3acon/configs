@@ -1,6 +1,20 @@
-# Path to your oh-my-zsh installation.
-export ZSH=/home/ub/.oh-my-zsh
-export SHELL=/usr/bin/zsh
+# linux specific stuff
+UNAME_S=`uname -s`
+if [ $UNAME_S = "Linux" ]; then
+  # Path to your oh-my-zsh installation.
+  export ZSH=/home/`whoami`/.oh-my-zsh
+  export SHELL=/usr/bin/zsh
+
+  # make pretty color
+  export TERM=xterm-256color 
+  # capslock becomes ctrl
+  setxkbmap -layout us -option ctrl:nocaps
+fi
+# and now if on osx
+if [ $UNAME_S = "Darwin" ]; then
+  export ZSH=/Users/`whoami`/.oh-my-zsh
+  export SHELL=/usr/local/bin/zsh
+fi
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -87,20 +101,20 @@ source $ZSH/oh-my-zsh.sh
 ### this is PRIVATE ###
 export HOMEBREW_GITHUB_API_TOKEN=""
 
-# aliases 
-alias sl='echo "is spelled ls you drunk bastard"; ls'
-alias vimo='vim -o'
-alias vimO='vim -O'
+# now aliases 
+alias sl='echo "it is spelled ls you drunk bastard"; ls'
+
 #alias sftp='with-readline sftp'
 
 #git is ridiculilous 
-alias status='git status'
-alias commit='git commit'
-alias push='git push'
-alias add='git add'
+alias gits='git status'
+alias gitc='git commit'
+alias gitp='git push'
+alias gita='git add'
 
 # mOre vim
 alias vim='vim -O'
+alias mim='mvim -v -O'
 
 # colors for less?
 man() 
@@ -116,7 +130,7 @@ man()
   man "$@"
 }
 
-# tmux is just awesome
+# tmux
 alias tmux="TERM=screen-256color-bce tmux"
 alias t='tmux'
 I=$(echo $TMUX_PANE | sed 's/[^0-9]*//g')
@@ -124,11 +138,3 @@ I=$(echo $TMUX_PANE | sed 's/[^0-9]*//g')
 # for mosh
 LANG=en_US.UTF-8 
 
-# linux specific stuff
-UNAME_S=`uname -s`
-if [ $UNAME_S = "Linux" ]; then
-  # make pretty color
-  export TERM=xterm-256color 
-  # capslock becomes ctrl
-  setxkbmap -layout us -option ctrl:nocaps
-fi
