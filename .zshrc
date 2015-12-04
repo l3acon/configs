@@ -21,7 +21,7 @@ fi
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 #ZSH_THEME="random"
-ZSH_THEME="terminalparty"
+ZSH_THEME="baconparty"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -128,6 +128,34 @@ man()
   LESS_TERMCAP_ue=$(printf "\e[0m") \
   LESS_TERMCAP_us=$(printf "\e[1;32m") \
   man "$@"
+}
+# here we take over the world
+pwn()
+{
+  if [ $# -ne 1 ]
+  then
+    echo -e "\nusage: pwn <host-file>"
+    echo -e "\twhere <host-file> has one host per line, e.g."
+    echo -e "\t pi@192.168.1.99"
+    echo -e "\t pi@192.168.1.98 ...etc"
+    return
+  fi
+
+  if [ ! -f $1 ]
+  then
+    echo -e "\n file does not exist"
+    return
+  fi
+
+
+  tmux new-window "ssh $1"
+  while read i
+  do
+    tmux split-window -h "ssh $i"
+    tmux select-layout tiled > /dev/null
+  done < $1
+  tmux select-pane -t 0
+  tmux set-window-option synchronize-panes on > /dev/null
 }
 
 # tmux
