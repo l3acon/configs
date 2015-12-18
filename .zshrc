@@ -7,8 +7,10 @@ if [ $UNAME_S = "Linux" ]; then
 
   # make pretty color
   export TERM=xterm-256color 
-  # capslock becomes ctrl
-  setxkbmap -layout us -option ctrl:nocaps
+  if hash setxkbmap 2>/dev/null; then
+    # capslock becomes ctrl
+    setxkbmap -layout us -option ctrl:nocaps
+  fi
 fi
 # and now if on osx
 if [ $UNAME_S = "Darwin" ]; then
