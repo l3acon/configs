@@ -114,18 +114,24 @@ alias gitc='git commit'
 alias gitp='git push'
 alias gita='git add'
 
-# something for opening relevent c files
-cim()
-{
-  for arg in "$@"
-  do
-    files+=`find . -name "$1*" -not -name "*.o" -maxdepth 1`
-  done
-  vim $files
-}
 # mOre vim
 alias vim='vim -O'
 alias mim='mvim -v -O'
+
+# something for opening relevent c files
+cim()
+{
+  THESE=""
+  for arg in "$@"
+  do
+    THESE+=`find . -maxdepth 1 -name "$arg*" -not -name "*.o"`
+  done
+  
+  if [ -n  "$THESE" ]
+  then
+    vim `echo $THESE | tr '\n' ' '`
+  fi
+}
 
 # colors for less?
 man() 
@@ -176,4 +182,3 @@ I=$(echo $TMUX_PANE | sed 's/[^0-9]*//g')
 
 # for mosh
 LANG=en_US.UTF-8 
-
