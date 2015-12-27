@@ -1,7 +1,9 @@
-syntax on
 
 set background=dark
+syntax enable
+syntax on
 colorscheme BusyBee
+
 
 set cursorline
 " Default Colors for CursorLine
@@ -46,6 +48,7 @@ set noerrorbells              " No error bells please
 set shell=bash
 set fileformats=unix
 set ff=unix
+set t_ut=                     " no blocky colors
 filetype on                   " Enable filetype detection
 filetype indent on            " Enable filetype-specific indenting
 filetype plugin on            " Enable filetype-specific plugins
@@ -67,11 +70,14 @@ set laststatus=2
 "  set viminfo=%100,'100,/100,h,\"500,:100,n~/.viminfo
   "set viminfo='100,f1
 
+set clipboard=unnamedplus
   " spelling
   if v:version >= 700
     " Enable spell check for text files
       autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en
       autocmd BufNewFile,BufRead *.md setlocal spell spelllang=en
+      autocmd BufNewFile,BufRead *.markdown setlocal spell spelllang=en
+      autocmd BufNewFile,BufRead *.ino setlocal syntax=cpp 
       endif
 
       " mappings

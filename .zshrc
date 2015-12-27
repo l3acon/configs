@@ -125,6 +125,8 @@ cim()
   for arg in "$@"
   do
     THESE+=`find . -maxdepth 1 -name "$arg*" -not -name "*.o"`
+    if [ -n  "$THESE" ]; then;
+      THESE+="\n"; fi
   done
   
   if [ -n  "$THESE" ]
