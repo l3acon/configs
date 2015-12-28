@@ -103,20 +103,9 @@ source $ZSH/oh-my-zsh.sh
 ### this is PRIVATE ###
 export HOMEBREW_GITHUB_API_TOKEN=""
 
-# now aliases 
-alias sl='echo "it is spelled ls you drunk bastard"; ls'
-
-#alias sftp='with-readline sftp'
-
-#git is ridiculilous 
-alias gits='git status'
-alias gitc='git commit'
-alias gitp='git push'
-alias gita='git add'
-
-# mOre vim
-alias vim='vim -O'
-alias mim='mvim -v -O'
+#
+# now a Bunch 'O Functions
+#
 
 # something for opening relevent c files
 cim()
@@ -126,13 +115,57 @@ cim()
   do
     THESE+=`find . -maxdepth 1 -name "$arg*" -not -name "*.o"`
     if [ -n  "$THESE" ]; then;
-      THESE+="\n"; fi
+      THESE+="\n"
+    fi
   done
   
   if [ -n  "$THESE" ]
   then
-    vim `echo $THESE | tr '\n' ' '`
+    vim -O `echo $THESE | tr '\n' ' '`
   fi
+}
+
+# loop forever more easily
+forever()
+{
+  if [ "$1" -eq "$1" ] 2>/dev/null
+  then
+    DELAY=$1
+    shift
+  else
+    DELAY=1
+  fi
+  while true
+  do
+    $@
+    sleep $DELAY
+  done
+}
+
+# here we take over the world
+pwn()
+{
+  USAGE="\nusage: pwn <host-file>\n\twhere <host-file> has one host per line, e.g.\n\tpi@192.168.1.99\n\tpi@192.168.1.98 ...etc"
+  if [ $# -ne 1 ]
+  then
+    echo -e $USAGE
+    return
+  fi
+
+  if [ ! -f $1 ]
+  then
+    echo -e "\n file does not exist"
+    return
+  fi
+
+  tmux new-window "ssh $1"
+  while read i
+  do
+    tmux split-window -h "ssh $i"
+    tmux select-layout tiled > /dev/null
+  done < $1
+  tmux select-pane -t 0
+  tmux set-window-option synchronize-panes on > /dev/null
 }
 
 # colors for less?
@@ -148,39 +181,28 @@ man()
   LESS_TERMCAP_us=$(printf "\e[1;32m") \
   man "$@"
 }
-# here we take over the world
-pwn()
-{
-  if [ $# -ne 1 ]
-  then
-    echo -e "\nusage: pwn <host-file>"
-    echo -e "\twhere <host-file> has one host per line, e.g."
-    echo -e "\t pi@192.168.1.99"
-    echo -e "\t pi@192.168.1.98 ...etc"
-    return
-  fi
+#
+# now aliases 
+# 
+alias sl='echo "it is spelled ls you drunk bastard"; ls'
 
-  if [ ! -f $1 ]
-  then
-    echo -e "\n file does not exist"
-    return
-  fi
+#alias sftp='with-readline sftp'
 
+#git is ridiculilous 
+alias gits='git status'
+alias gitc='git commit'
+alias gitp='git push'
+alias gita='git add'
 
-  tmux new-window "ssh $1"
-  while read i
-  do
-    tmux split-window -h "ssh $i"
-    tmux select-layout tiled > /dev/null
-  done < $1
-  tmux select-pane -t 0
-  tmux set-window-option synchronize-panes on > /dev/null
-}
+# mOre vim
+alias vim='vim -O'
+alias mim='mvim -v -O'
 
 # tmux
 alias tmux="TERM=screen-256color-bce tmux"
 alias t='tmux'
 I=$(echo $TMUX_PANE | sed 's/[^0-9]*//g')
+
 
 # for mosh
 LANG=en_US.UTF-8 
