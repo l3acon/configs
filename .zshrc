@@ -7,10 +7,8 @@ if [ $UNAME_S = "Linux" ]; then
 
   # make pretty color
   export TERM=xterm-256color 
-  if hash setxkbmap 2>/dev/null; then
-    # capslock becomes ctrl
-    setxkbmap -layout us -option ctrl:nocaps
-  fi
+  # capslock becomes ctrl
+  setxkbmap -layout us -option ctrl:nocaps
 fi
 # and now if on osx
 if [ $UNAME_S = "Darwin" ]; then
@@ -23,6 +21,7 @@ fi
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 #ZSH_THEME="random"
+#ZSH_THEME="terminalparty"
 ZSH_THEME="baconparty"
 
 # Uncomment the following line to use case-sensitive completion.
@@ -63,7 +62,7 @@ ZSH_THEME="baconparty"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git battery zsh-syntax-highlighting)
 
 # User configuration
 
@@ -103,9 +102,14 @@ source $ZSH/oh-my-zsh.sh
 ### this is PRIVATE ###
 export HOMEBREW_GITHUB_API_TOKEN=""
 
-#
-# now a Bunch 'O Functions
-#
+# aliases 
+alias sl='echo "is spelled ls you drunk bastard"; ls'
+alias c='clear; echo "\n"; ls;'
+alias vim='vim -O'
+alias mim='mvim -v -O'
+#alias vimo='vim -o'
+#alias vimO='vim -O'
+#alias fzf='fzf -m'
 
 # something for opening relevent c files
 cim()
@@ -115,40 +119,68 @@ cim()
   do
     THESE+=`find . -maxdepth 1 -name "$arg*" -not -name "*.o"`
     if [ -n  "$THESE" ]; then;
-      THESE+="\n"
-    fi
+      THESE+="\n"; fi
   done
   
   if [ -n  "$THESE" ]
   then
-    vim -O `echo $THESE | tr '\n' ' '`
+    mim `echo $THESE | tr '\n' ' '`
   fi
 }
 
-# loop forever more easily
-forever()
+alias sftp='with-readline sftp'
+
+# colors for less?
+man() 
 {
-  if [ "$1" -eq "$1" ] 2>/dev/null
+  env \
+  LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+  LESS_TERMCAP_md=$(printf "\e[1;31m") \
+  LESS_TERMCAP_me=$(printf "\e[0m") \
+  LESS_TERMCAP_se=$(printf "\e[0m") \
+  LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+  LESS_TERMCAP_ue=$(printf "\e[0m") \
+  LESS_TERMCAP_us=$(printf "\e[1;32m") \
+  man "$@"
+}
+
+super()
+{
+  if [ $# -ne 2 ]
   then
-    DELAY=$1
-    shift
-  else
-    DELAY=1
+    echo -e "\nusage: super command <host-file>"
+    echo -e "\twhere <host-file> has one host per line, e.g."
+    echo -e "\t pi@192.168.1.99"
+    echo -e "\t pi@192.168.1.98 ...etc"
+    return
   fi
-  while true
+
+  if [ ! -f $2 ]
+  then
+    echo -e "\n file does not exist"
+    return
+  fi
+
+  tmux new-window "$1 $2"
+  while read i
   do
-    $@
-    sleep $DELAY
-  done
+    tmux split-window -h "$1 $i"
+    tmux select-layout tiled > /dev/null
+  done < $2
+
+  tmux select-pane -t 0
+  tmux set-window-option synchronize-panes on > /dev/null
 }
 
 # here we take over the world
 pwn()
 {
-  USAGE="\nusage: pwn <host-file>\n\twhere <host-file> has one host per line, e.g.\n\tpi@192.168.1.99\n\tpi@192.168.1.98 ...etc"
   if [ $# -ne 1 ]
   then
-    echo -e $USAGE
+    echo -e "\nusage: pwn <host-file>"
+    echo -e "\twhere <host-file> has one host per line, e.g."
+    echo -e "\t pi@192.168.1.99"
+    echo -e "\t pi@192.168.1.98 ...etc"
     return
   fi
 
@@ -167,42 +199,15 @@ pwn()
   tmux select-pane -t 0
   tmux set-window-option synchronize-panes on > /dev/null
 }
+    
 
-# colors for less?
-man() 
-{
-  env \
-  LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-  LESS_TERMCAP_md=$(printf "\e[1;31m") \
-  LESS_TERMCAP_me=$(printf "\e[0m") \
-  LESS_TERMCAP_se=$(printf "\e[0m") \
-  LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-  LESS_TERMCAP_ue=$(printf "\e[0m") \
-  LESS_TERMCAP_us=$(printf "\e[1;32m") \
-  man "$@"
-}
-#
-# now aliases 
-# 
-alias sl='echo "it is spelled ls you drunk bastard"; ls'
-
-#alias sftp='with-readline sftp'
-
-#git is ridiculilous 
-alias gits='git status'
-alias gitc='git commit'
-alias gitp='git push'
-alias gita='git add'
-
-# mOre vim
-alias vim='vim -O'
-alias mim='mvim -v -O'
-
-# tmux
+# more tmux 
 alias tmux="TERM=screen-256color-bce tmux"
 alias t='tmux'
+# give me an index for multiple planes
 I=$(echo $TMUX_PANE | sed 's/[^0-9]*//g')
-
 
 # for mosh
 LANG=en_US.UTF-8 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
