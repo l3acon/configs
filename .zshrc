@@ -2,7 +2,7 @@
 UNAME_S=`uname -s`
 if [ $UNAME_S = "Linux" ]; then
   # Path to your oh-my-zsh installation.
-  export ZSH=/home/`whoami`/.oh-my-zsh
+  export ZSH=$HOME/.oh-my-zsh
   export SHELL=/usr/bin/zsh
 
   # make pretty color
@@ -12,7 +12,7 @@ if [ $UNAME_S = "Linux" ]; then
 fi
 # and now if on osx
 if [ $UNAME_S = "Darwin" ]; then
-  export ZSH=/Users/`whoami`/.oh-my-zsh
+  export ZSH=$HOME/.oh-my-zsh
   export SHELL=/usr/local/bin/zsh
 fi
 
