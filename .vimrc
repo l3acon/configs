@@ -1,13 +1,54 @@
-
 set background=dark
-syntax enable
 syntax on
 colorscheme BusyBee
 
-
 set cursorline
 " Default Colors for CursorLine
-highlight CursorLine term=none cterm=none ctermbg=Black guibg=Grey40
+highlight CursorLine term=none cterm=none ctermbg=Black guibg=Grey20
+
+if has("gui_macvim")
+	set nocompatible              " be iMproved, required
+	filetype off                  " required
+  highlight Cursor guifg=white guibg=pink
+  highlight iCursor guifg=white guibg=steelblue
+  "set guicursor=n-v-c:block-Cursor
+  "set guicursor+=i:ver10-iCursor
+  "set guicursor+=n-v-c:blinkon0
+  "set guicursor+=i:blinkwait10
+
+	" set the runtime path to include Vundle and initialize
+	set rtp+=~/.vim/bundle/Vundle.vim
+	call vundle#begin()
+	" alternatively, pass a path where Vundle should install plugins
+	"call vundle#begin('~/some/path/here')
+
+	" let Vundle manage Vundle, required
+	Plugin 'VundleVim/Vundle.vim'
+
+	"
+	" ma pluggin's
+	"
+	"
+	Plugin 'Valloric/YouCompleteMe'
+  Plugin 'rust-lang/rust.vim'
+  Bundle 'cespare/vim-toml'
+
+	" All of your Plugins must be added before the following line
+	call vundle#end()            " required
+	filetype plugin indent on    " required
+	" To ignore plugin indent changes, instead use:
+	"filetype plugin on
+	"
+	" Brief help
+	" :PluginList       - lists configured plugins
+	" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+	" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+	" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+	"
+	" see :h vundle for more details or wiki for FAQ
+	" Put your non-Plugin stuff after this line
+endif
+
 
 " Disable CursorLine for Insert mode 
 autocmd InsertEnter * set nocursorline
@@ -48,7 +89,6 @@ set noerrorbells              " No error bells please
 set shell=bash
 set fileformats=unix
 set ff=unix
-set t_ut=                     " no blocky colors
 filetype on                   " Enable filetype detection
 filetype indent on            " Enable filetype-specific indenting
 filetype plugin on            " Enable filetype-specific plugins
@@ -64,20 +104,21 @@ set laststatus=2
   set showmatch                 " show matching bracket
   set diffopt=filler,iwhite     " ignore all whitespace and sync
 
+" for spin file type
+au BufRead,BufNewFile *.spin set filetype=spin 
+au! Syntax spin source $HOME/.vim/syntax/spin.vim
+
   "  backup
 "  set backup
 "  set backupdir=~/.vim_backup
 "  set viminfo=%100,'100,/100,h,\"500,:100,n~/.viminfo
   "set viminfo='100,f1
 
-set clipboard=unnamedplus
   " spelling
   if v:version >= 700
     " Enable spell check for text files
       autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en
       autocmd BufNewFile,BufRead *.md setlocal spell spelllang=en
-      autocmd BufNewFile,BufRead *.markdown setlocal spell spelllang=en
-      autocmd BufNewFile,BufRead *.ino setlocal syntax=cpp 
       endif
 
       " mappings
@@ -85,3 +126,5 @@ set clipboard=unnamedplus
       nmap <LocalLeader>tl :set list!<cr>
       " toggle paste mode
    		nmap <LocalLeader>pp :set paste!<cr>
+
+set rtp+=/usr/local/opt/fzf
