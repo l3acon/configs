@@ -1,16 +1,15 @@
 #/bin/bash -x
-PACKAGES= tmux zsh vim git 
+PACKAGES= tmux zsh git 
 
 if [ $(uname -s) = "Linux" ]; then
-  # see if we has x
-  if xset q &>/dev/null; then $PACKAGES+= vim-gnome; fi
-  sudo apt-get update && sudo apt-get install $PACKAGES
+  sudo apt-get remove vim-common vim-runtime vim-gtk vim-gui-common vim-tiny
+  sudo apt-get update && sudo apt-get install $PACKAGES vim-nox-py2
 fi
 
 # and now if on osx
 if [ $(uname -s) = "Darwin" ]; then
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  brew update && brew install $PACKAGES
+  brew update && brew install $PACKAGES vim
 fi
 
 # get & install oh-my-zsh
@@ -28,4 +27,4 @@ cp -R .vim ~/
 
 git clone git://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
-echo "extras:\n\tvim +BundleInstall\tget yer github-homebrew-api-key\t\ncd ~/.vim/bundle/YouCompleteMe && ./install.sh --clang-compiler"
+echo "extras:\n\tmim +BundleInstall\tget yer github-homebrew-api-key\t\ncd ~/.vim/bundle/YouCompleteMe && ./install.sh --clang-compiler"
