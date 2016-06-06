@@ -1,19 +1,39 @@
 # linux specific stuff
+export ZSH=$HOME/.oh-my-zsh
 UNAME_S=`uname -s`
 if [ $UNAME_S = "Linux" ]; then
   # Path to your oh-my-zsh installation.
-  export ZSH=$HOME/.oh-my-zsh
   export SHELL=/usr/bin/zsh
-
   # make pretty color
   export TERM=xterm-256color 
-  # capslock becomes ctrl
-  setxkbmap -layout us -option ctrl:nocaps
+  
+  # give me powerful vim
+  alias mim='vim --cmd "let strong=1" -O'
+
+  # see if X is running
+  if xset q &>/dev/null; then
+    # capslock becomes ctrl
+    setxkbmap -layout us -option ctrl:nocaps
+  fi
+
+  # more pretty colors
+  alias ls='ls --color=always'
+  alias dmesg='dmesg --color=always'
 fi
+
 # and now if on osx
 if [ $UNAME_S = "Darwin" ]; then
-  export ZSH=$HOME/.oh-my-zsh
   export SHELL=/usr/local/bin/zsh
+  # pretty colors
+  export CLICOLOR_FORCE=1
+  # give me macvim
+  alias mim='mvim -v -O'
+  
+  # homebrew uses git
+  if [ ! -f $HOME/.homebrew-github-api-token ]
+  then
+    export HOMEBREW_GITHUB_API_TOKEN=`cat $HOME/.homebrew-github-api-token`
+  fi
 fi
 
 # Set name of the theme to load.
@@ -73,15 +93,24 @@ export PATH="/usr/local/sbin:$PATH"
 
 source $ZSH/oh-my-zsh.sh
 
+# colors for less?
+man() 
+{
+  env \
+  LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+  LESS_TERMCAP_md=$(printf "\e[1;31m") \
+  LESS_TERMCAP_me=$(printf "\e[0m") \
+  LESS_TERMCAP_se=$(printf "\e[0m") \
+  LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+  LESS_TERMCAP_ue=$(printf "\e[0m") \
+  LESS_TERMCAP_us=$(printf "\e[1;32m") \
+  man "$@"
+}
+
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+# yes, for mosh
+LANG=en_US.UTF-8 
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -98,18 +127,15 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# homebrew uses git
-### this is PRIVATE ###
-export HOMEBREW_GITHUB_API_TOKEN=""
 
 # aliases 
 alias sl='echo "is spelled ls you drunk bastard"; ls'
-alias c='clear; echo "\n"; ls;'
-alias vim='vim -O'
-alias mim='mvim -v -O'
-#alias vimo='vim -o'
-#alias vimO='vim -O'
+alias c='clear; echo " "; ls -lah'
+# more tmux 
+alias tmux="TERM=screen-256color-bce tmux"
+alias t='tmux'
 #alias fzf='fzf -m'
+alias sftp='with-readline sftp'
 
 # something for opening relevent c files
 cim()
@@ -128,86 +154,63 @@ cim()
   fi
 }
 
-alias sftp='with-readline sftp'
-
-# colors for less?
-man() 
+forever()
 {
-  env \
-  LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-  LESS_TERMCAP_md=$(printf "\e[1;31m") \
-  LESS_TERMCAP_me=$(printf "\e[0m") \
-  LESS_TERMCAP_se=$(printf "\e[0m") \
-  LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-  LESS_TERMCAP_ue=$(printf "\e[0m") \
-  LESS_TERMCAP_us=$(printf "\e[1;32m") \
-  man "$@"
-}
-
-super()
-{
-  if [ $# -ne 2 ]
+  if [ $# -lt 1 ] 
   then
-    echo -e "\nusage: super command <host-file>"
-    echo -e "\twhere <host-file> has one host per line, e.g."
-    echo -e "\t pi@192.168.1.99"
-    echo -e "\t pi@192.168.1.98 ...etc"
+    echo -e "\tusage: forever [speed] <command> [ops...]"
     return
   fi
 
-  if [ ! -f $2 ]
+  if hash "$1" 2>/dev/null
   then
-    echo -e "\n file does not exist"
-    return
+    while true; do $@ ; sleep 1; done
+  else
+    while true; do ${@:2} ; sleep $1; done
   fi
-
-  tmux new-window "$1 $2"
-  while read i
-  do
-    tmux split-window -h "$1 $i"
-    tmux select-layout tiled > /dev/null
-  done < $2
-
-  tmux select-pane -t 0
-  tmux set-window-option synchronize-panes on > /dev/null
 }
 
 # here we take over the world
-pwn()
-{
-  if [ $# -ne 1 ]
+pwn() {
+  if [ $# -lt 1 ]
   then
-    echo -e "\nusage: pwn <host-file>"
-    echo -e "\twhere <host-file> has one host per line, e.g."
+    echo -e "\tsage: pwn [command | (ssh)] <target-file>"
+    echo -e "\twhere <target-file> has one thing per line, e.g."
     echo -e "\t pi@192.168.1.99"
     echo -e "\t pi@192.168.1.98 ...etc"
     return
   fi
 
-  if [ ! -f $1 ]
+  PWN_COMMAND=''
+  TGT_FILE=''
+  if hash "$1" 2>/dev/null
   then
-    echo -e "\n file does not exist"
+    PWN_COMMAND="$1"
+    TGT_FILE="$2"
+  else
+    # we do ssh by default
+    PWN_COMMAND="ssh "
+    TGT_FILE="$1"
+  fi
+  if [ ! -f $TGT_FILE ]
+  then
+    echo -e "\tfile does not exist"
     return
   fi
 
-  tmux new-window "ssh $1"
+  echo "with great power..., be careful damnit"; sleep .5
+  tmux new-window "$PWN_COMMAND $$TGT_FILE"
   while read i
   do
-    tmux split-window -h "ssh $i"
+    tmux split-window -h "$PWN_COMMAND $i"
     tmux select-layout tiled > /dev/null
-  done < $1
+  done < $TGT_FILE
   tmux select-pane -t 0
   tmux set-window-option synchronize-panes on > /dev/null
 }
     
-
-# more tmux 
-alias tmux="TERM=screen-256color-bce tmux"
-alias t='tmux'
 # give me an index for multiple planes
 I=$(echo $TMUX_PANE | sed 's/[^0-9]*//g')
 
-# for mosh
-LANG=en_US.UTF-8 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

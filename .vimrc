@@ -6,7 +6,7 @@ set cursorline
 " Default Colors for CursorLine
 highlight CursorLine term=none cterm=none ctermbg=Black guibg=Grey20
 
-if has("gui_macvim")
+if has("gui_macvim") || exists('strong')
 	set nocompatible              " be iMproved, required
 	filetype off                  " required
   highlight Cursor guifg=white guibg=pink
@@ -86,7 +86,7 @@ set updatecount=100           " switch every 100 chars
 set complete=.,w,b,u,U,t,i,d  " do lots of scanning on tab completion
 set ttyfast                   " we have a fast terminal
 set noerrorbells              " No error bells please
-set shell=bash
+set shell=zsh
 set fileformats=unix
 set ff=unix
 filetype on                   " Enable filetype detection
@@ -108,23 +108,23 @@ set laststatus=2
 au BufRead,BufNewFile *.spin set filetype=spin 
 au! Syntax spin source $HOME/.vim/syntax/spin.vim
 
-  "  backup
+"  backup
 "  set backup
 "  set backupdir=~/.vim_backup
 "  set viminfo=%100,'100,/100,h,\"500,:100,n~/.viminfo
   "set viminfo='100,f1
 
-  " spelling
-  if v:version >= 700
-    " Enable spell check for text files
-      autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en
-      autocmd BufNewFile,BufRead *.md setlocal spell spelllang=en
-      endif
+" spelling
+if v:version >= 700
+  " Enable spell check for text files
+  autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en
+  autocmd BufNewFile,BufRead *.md setlocal spell spelllang=en
+  endif
 
-      " mappings
-      " toggle list mode
-      nmap <LocalLeader>tl :set list!<cr>
-      " toggle paste mode
-   		nmap <LocalLeader>pp :set paste!<cr>
+  " mappings
+  " toggle list mode
+  nmap <LocalLeader>tl :set list!<cr>
+  " toggle paste mode
+ 	nmap <LocalLeader>pp :set paste!<cr>
 
 set rtp+=/usr/local/opt/fzf
