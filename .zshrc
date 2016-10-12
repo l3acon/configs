@@ -4,17 +4,15 @@ UNAME_S=`uname -s`
 if [ $UNAME_S = "Linux" ]; then
   # Path to your oh-my-zsh installation.
   export SHELL=/usr/bin/zsh
-  # make pretty color
-  export TERM=xterm-256color 
   
   # give me powerful vim
-  alias mim='vim --cmd "let strong=1" -O'
+  alias vim='vim -O --cmd "let strong=1"'
 
   # see if X is running
   if xset q &>/dev/null; then
     # capslock becomes ctrl
     setxkbmap -layout us -option ctrl:nocaps
-  fi
+ fi
 
   # more pretty colors
   alias ls='ls --color=always'
@@ -36,6 +34,26 @@ if [ $UNAME_S = "Darwin" ]; then
   fi
 fi
 
+if which tput >/dev/null 2>&1; then
+    ncolors=$(tput colors)
+fi
+if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
+  RED="$(tput setaf 1)"
+  GREEN="$(tput setaf 2)"
+  YELLOW="$(tput setaf 3)"
+  BLUE="$(tput setaf 4)"
+  BOLD="$(tput bold)"
+  NORMAL="$(tput sgr0)"
+else
+  RED=""
+  GREEN=""
+  YELLOW=""
+  BLUE=""
+  BOLD=""
+  NORMAL=""
+fi
+
+
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -48,7 +66,7 @@ ZSH_THEME="baconparty"
 # CASE_SENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
+DISABLE_AUTO_UPDATE="true"
 
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
@@ -135,7 +153,11 @@ alias c='clear; echo " "; ls -lah'
 alias tmux="TERM=screen-256color-bce tmux"
 alias t='tmux'
 #alias fzf='fzf -m'
-alias sftp='with-readline sftp'
+
+web() 
+{
+  links -http-proxy $http_proxy -https-proxy $https_proxy $@
+}
 
 # something for opening relevent c files
 cim()
@@ -158,14 +180,16 @@ forever()
 {
   if [ $# -lt 1 ] 
   then
-    echo -e "\tusage: forever [speed] <command> [ops...]"
+    printf "${BOLD}usage: ${NORMAL}forever [speed] <command> [ops...]\n"
+    echo -e "\tspeed is optional, the default is one second"
     return
   fi
-
   if hash "$1" 2>/dev/null
   then
+    #watch --differences $@
     while true; do $@ ; sleep 1; done
   else
+    #watch --differences --interval $1 ${@:2}
     while true; do ${@:2} ; sleep $1; done
   fi
 }
@@ -174,10 +198,11 @@ forever()
 pwn() {
   if [ $# -lt 1 ]
   then
-    echo -e "\tsage: pwn [command | (ssh)] <target-file>"
-    echo -e "\twhere <target-file> has one thing per line, e.g."
-    echo -e "\t pi@192.168.1.99"
-    echo -e "\t pi@192.168.1.98 ...etc"
+    printf "${BOLD}usage: ${NORMAL}pwn [command | (ssh)] ${BOLD}<target-file>${NORMAL}"
+    printf "\n\twhere ${BOLD}<target-file>${NORMAL} has one thing per line, e.g."
+    printf "\n\t\tpi@192.168.1.99"
+    printf "\n\t\tpi@192.168.1.98 ...etc"
+    echo -e "\n\tif no command is specified ssh is assumed"
     return
   fi
 
@@ -198,7 +223,8 @@ pwn() {
     return
   fi
 
-  echo "with great power..., be careful damnit"; sleep .5
+  printf "\nwith great power"
+  for i in `seq 1 6`; do printf "."; sleep .1; done; echo ""
   tmux new-window "$PWN_COMMAND $$TGT_FILE"
   while read i
   do
