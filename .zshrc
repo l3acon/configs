@@ -3,10 +3,11 @@ export ZSH=$HOME/.oh-my-zsh
 UNAME_S=`uname -s`
 if [ $UNAME_S = "Linux" ]; then
   # Path to your oh-my-zsh installation.
-  export SHELL=/usr/bin/zsh
+  export SHELL=`which zshrc`
   
   # give me powerful vim
-  alias vim='vim -O --cmd "let strong=1"'
+  #alias vim='vim -O --cmd "let strong=1"'
+  alias vim='vim -O'
 
   # see if X is running
   if xset q &>/dev/null; then

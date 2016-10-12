@@ -4,12 +4,12 @@ PACKAGES="tmux zsh git curl htop"
 
 # on deb-ish with a gui
 if [ $(uname -s) = "Linux" ] && type apt-get 2> /dev/null && xset &>/dev/null; then
-  sudo apt-get remove vim-common vim-runtime vim-gtk vim-gui-common vim-tiny
-  sudo apt-get update && sudo apt-get install $PACKAGES vim-nox-py2 vim-gnome
+  sudo apt-get remove -y vim-common vim-runtime vim-gtk vim-gui-common vim-tiny
+  sudo apt-get update && sudo apt-get install -y $PACKAGES vim-nox-py2 vim-gnome
 else
   # or just deb-ish
   if [ $(uname -s) = "Linux" ] && type apt-get 2> /dev/null; then
-    sudo apt-get update && sudo apt-get install $PACKAGES vim
+    sudo apt-get update && sudo apt-get install -y $PACKAGES vim
     if [ $? -ne 0 ]; then echo "something went wrong"; exit 1; fi
   fi
 fi
