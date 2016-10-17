@@ -3,7 +3,7 @@ export ZSH=$HOME/.oh-my-zsh
 UNAME_S=`uname -s`
 if [ $UNAME_S = "Linux" ]; then
   # Path to your oh-my-zsh installation.
-  export SHELL=`which zshrc`
+  export SHELL=`which zsh`
   
   # give me powerful vim
   #alias vim='vim -O --cmd "let strong=1"'
