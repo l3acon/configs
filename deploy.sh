@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-PACKAGES="tmux zsh git curl htop"
+PACKAGES="tmux zsh git curl htop tree"
 
 # on deb-ish with a gui
 if [ $(uname -s) = "Linux" ] && type apt-get 2> /dev/null && xset &>/dev/null; then
@@ -39,14 +39,16 @@ for i in $NOT_NEEDED; do rm $HOME/$i; done
 
 # other plugins
 git clone git://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+# vundle
 
 printf "${BOLD}"
 echo  'some extras:                                         '
-echo  ' - mim +BundleInstall                                '
 echo  ' - get yer .homebrew-github-api-token                '
-echo  ' - cd ~/.vimr/bhudle/YouCompleteMe && ./instahh.sh --clang-compiler'
+echo  ' - do YCM: python-dev python3-dev cmake rustc cargo build-essential'
+echo  ' ~/.vim/bundle/YouCompleteMe/install.sh --clang-completer --racer-completer'
 echo  ' if this script breaks please add in changes...      '
 echo  ' otherwise you know exactly what happens...          '
 printf "${NORMAL}"
 
-env zsh
+env zsh -c " vim +BundleInstall +q"

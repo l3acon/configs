@@ -6,8 +6,8 @@ if [ $UNAME_S = "Linux" ]; then
   export SHELL=`which zsh`
   
   # give me powerful vim
-  #alias vim='vim -O --cmd "let strong=1"'
-  alias vim='vim -O'
+  alias vim='vim -O --cmd "let strong=1"'
+  #alias vim='vim -O'
 
   # see if X is running
   if xset q &>/dev/null; then

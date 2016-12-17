@@ -1,14 +1,14 @@
 set background=dark
 syntax on
-colorscheme BusyBee
+colorscheme twilight256
 
 set cursorline
 " Default Colors for CursorLine
 highlight CursorLine term=none cterm=none ctermbg=Black guibg=Grey20
 
 if has("gui_macvim") || exists('strong')
-	set nocompatible              " be iMproved, required
-	filetype off                  " required
+  set nocompatible              " be iMproved, required
+  filetype off                  " required
   highlight Cursor guifg=white guibg=pink
   highlight iCursor guifg=white guibg=steelblue
   "set guicursor=n-v-c:block-Cursor
@@ -98,11 +98,11 @@ let maplocalleader=','        " all my macros start with ,
 set laststatus=2
 
 "  searching
-  set incsearch                 " incremental search
-  set ignorecase                " search ignoring case
-  set hlsearch                  " highlight the search
-  set showmatch                 " show matching bracket
-  set diffopt=filler,iwhite     " ignore all whitespace and sync
+set incsearch                 " incremental search
+set ignorecase                " search ignoring case
+set hlsearch                  " highlight the search
+set showmatch                 " show matching bracket
+set diffopt=filler,iwhite     " ignore all whitespace and sync
 
 " for spin file type
 au BufRead,BufNewFile *.spin set filetype=spin 
@@ -112,19 +112,19 @@ au! Syntax spin source $HOME/.vim/syntax/spin.vim
 "  set backup
 "  set backupdir=~/.vim_backup
 "  set viminfo=%100,'100,/100,h,\"500,:100,n~/.viminfo
-  "set viminfo='100,f1
+"set viminfo='100,f1
 
 " spelling
 if v:version >= 700
   " Enable spell check for text files
   autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en
   autocmd BufNewFile,BufRead *.md setlocal spell spelllang=en
-  endif
+endif
 
-  " mappings
-  " toggle list mode
-  nmap <LocalLeader>tl :set list!<cr>
-  " toggle paste mode
- 	nmap <LocalLeader>pp :set paste!<cr>
+" mappings
+" toggle list mode
+nmap <LocalLeader>tl :set list!<cr>
+" toggle paste mode
+nmap <LocalLeader>pp :set paste!<cr>
 
 set rtp+=/usr/local/opt/fzf
