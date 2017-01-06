@@ -21,6 +21,13 @@ if type yum 2> /dev/null ; then
   if [ $? -ne 0 ]; then echo "something went wrong"; exit 1; fi
 fi
 
+# on arch-ish
+if type pacman 2> /dev/null ; then 
+  sudo pacman -R vim --noconfirm
+  sudo pacman -S $PACKAGES gvim --noconfirm
+  if [ $? -ne 0 ]; then echo "something went wrong"; exit 1; fi
+fi
+
 # and now if on osx
 if [ $(uname -s) = "Darwin" ]; then
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -39,8 +46,8 @@ for i in $NOT_NEEDED; do rm $HOME/$i; done
 
 # other plugins
 git clone git://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 # vundle
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
 printf "${BOLD}"
 echo  'some extras:                                         '
