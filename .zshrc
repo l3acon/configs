@@ -1,22 +1,18 @@
+# linux specific stuff
 export ZSH=$HOME/.oh-my-zsh
 UNAME_S=`uname -s`
-
-# linux specific stuff
 if [ $UNAME_S = "Linux" ]; then
   # Path to your oh-my-zsh installation.
-  export SHELL=`which zsh`
+  export SHELL=/usr/bin/zsh
   
   # give me powerful vim
   alias vim='vim -O --cmd "let strong=1"'
-  #alias vim='vim -O'
 
   # see if X is running
   if xset q &>/dev/null; then
     # capslock becomes ctrl
     setxkbmap -layout us -option ctrl:nocaps
-  fi
-  # disable bell because it's DaF
-  xset -b
+ fi
 
   # more pretty colors
   alias ls='ls --color=always'
@@ -149,29 +145,16 @@ LANG=en_US.UTF-8
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-ssh() # make remoting in tmux nice
-{
-  if [ -n "$TMUX" ] ; then
-    tmux rename-window "ssh on $@"
-    tmux set-window-option  window-status-current-format "#[bg=colour248]#[fg=colour0] #F #{pane_current_command}#[fg=colour205]#I#[fg=colour4]$@"
-    tmux set-window-option  window-status-format "#[bg=colour232]#[fg=colour205] #F #{pane_current_command}#[fg=colour205]#I#[fg=colour4]$@"
-  fi
-  command ssh "$@"
-}
 
 # aliases 
 alias sl='echo "is spelled ls you drunk bastard"; ls'
 alias c='clear; echo " "; ls -lah'
 # more tmux 
-# don't thik this is necessary anymore
 #alias tmux="TERM=screen-256color-bce tmux"
 alias t='tmux'
+alias gopen='gnome-open'
 #alias fzf='fzf -m'
-
-web() 
-{
-  links -http-proxy $http_proxy -https-proxy $https_proxy $@
-}
+alias vsh='vagrant ssh'
 
 # something for opening relevent c files
 cim()

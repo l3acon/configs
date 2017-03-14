@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-PACKAGES="tmux zsh git curl htop tree"
+PACKAGES="tmux zsh git curl htop"
 
 # on deb-ish with a gui
 if [ $(uname -s) = "Linux" ] && type apt-get 2> /dev/null && xset &>/dev/null; then
@@ -40,9 +40,8 @@ source zsh-install.sh
 main
 
 # move everything home that isn't our git repo
-NOT_NEEDED=`ls`
-mv .git /tmp/.dont-hurt-me; cp -Rf . $HOME/; mv /tmp/.dont-hurt-me ./.git
-for i in $NOT_NEEDED; do rm $HOME/$i; done
+shopt -s extglob
+cp -aR !(.git|..|.|zsh-install.sh|deploy.sh) $HOME/
 
 # other plugins
 git clone git://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
