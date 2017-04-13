@@ -3,7 +3,7 @@ export ZSH=$HOME/.oh-my-zsh
 UNAME_S=`uname -s`
 if [ $UNAME_S = "Linux" ]; then
   # Path to your oh-my-zsh installation.
-  export SHELL=/usr/bin/zsh
+  export SHELL=`which zsh`
   
   # give me powerful vim
   alias vim='vim -O --cmd "let strong=1"'
@@ -53,6 +53,19 @@ else
   NORMAL=""
 fi
 
+# man gets prettier
+man() 
+{
+  env \
+  LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+  LESS_TERMCAP_md=$(printf "\e[1;31m") \
+  LESS_TERMCAP_me=$(printf "\e[0m") \
+  LESS_TERMCAP_se=$(printf "\e[0m") \
+  LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+  LESS_TERMCAP_ue=$(printf "\e[0m") \
+  LESS_TERMCAP_us=$(printf "\e[1;32m") \
+  man "$@"
+}
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -110,20 +123,6 @@ export PATH="/usr/local/sbin:$PATH"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
-
-# colors for less?
-man() 
-{
-  env \
-  LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-  LESS_TERMCAP_md=$(printf "\e[1;31m") \
-  LESS_TERMCAP_me=$(printf "\e[0m") \
-  LESS_TERMCAP_se=$(printf "\e[0m") \
-  LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-  LESS_TERMCAP_ue=$(printf "\e[0m") \
-  LESS_TERMCAP_us=$(printf "\e[1;32m") \
-  man "$@"
-}
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -235,5 +234,5 @@ pwn() {
 # give me an index for multiple planes
 I=$(echo $TMUX_PANE | sed 's/[^0-9]*//g')
 
-
+# fzf, but i don't use it
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
