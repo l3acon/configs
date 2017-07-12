@@ -71,7 +71,7 @@ set lazyredraw                " don't redraw when don't have to
 set showmode
 set showcmd
 set nocompatible              " vim, not vi
-set autoindent smartindent    " auto/smart indent
+set autoindent                " auto/smart indent
 set smarttab                  " tab and backspace are smart
 set tabstop=2                 " 6 spaces
 set shiftwidth=2

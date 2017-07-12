@@ -1,14 +1,12 @@
+# linux specific stuff
 export ZSH=$HOME/.oh-my-zsh
 UNAME_S=`uname -s`
-
-# linux specific stuff
 if [ $UNAME_S = "Linux" ]; then
   # Path to your oh-my-zsh installation.
   export SHELL=`which zsh`
   
   # give me powerful vim
   alias vim='vim -O --cmd "let strong=1"'
-  #alias vim='vim -O'
 
   # see if X is running
   if xset q &>/dev/null; then
@@ -16,8 +14,6 @@ if [ $UNAME_S = "Linux" ]; then
     setxkbmap -layout us -option ctrl:nocaps
     alias gopen='gnome-open'
   fi
-  # disable bell because it's DaF
-  #xset -b
 
   # more pretty colors
   alias ls='ls --color=always'
@@ -59,6 +55,19 @@ else
   NORMAL=""
 fi
 
+# man gets prettier
+man() 
+{
+  env \
+  LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+  LESS_TERMCAP_md=$(printf "\e[1;31m") \
+  LESS_TERMCAP_me=$(printf "\e[0m") \
+  LESS_TERMCAP_se=$(printf "\e[0m") \
+  LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+  LESS_TERMCAP_ue=$(printf "\e[0m") \
+  LESS_TERMCAP_us=$(printf "\e[1;32m") \
+  man "$@"
+}
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -117,20 +126,6 @@ export PATH="/usr/local/sbin:$PATH"
 
 source $ZSH/oh-my-zsh.sh
 
-# colors for less?
-man() 
-{
-  env \
-  LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-  LESS_TERMCAP_md=$(printf "\e[1;31m") \
-  LESS_TERMCAP_me=$(printf "\e[0m") \
-  LESS_TERMCAP_se=$(printf "\e[0m") \
-  LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-  LESS_TERMCAP_ue=$(printf "\e[0m") \
-  LESS_TERMCAP_us=$(printf "\e[1;32m") \
-  man "$@"
-}
-
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 # yes, for mosh
@@ -156,18 +151,12 @@ LANG=en_US.UTF-8
 alias sl='echo "is spelled ls you drunk bastard"; ls'
 alias c='clear; echo " "; ls -lah'
 # more tmux 
-# don't thik this is necessary anymore
 #alias tmux="TERM=screen-256color-bce tmux"
 alias t='tmux'
+alias gopen='gnome-open'
 #alias fzf='fzf -m'
 alias vsh='vagrant ssh'
-
 alias vla="virsh list --all"
-
-web() 
-{
-  links -http-proxy $http_proxy -https-proxy $https_proxy $@
-}
 
 # something for opening relevent c files
 cim()
@@ -248,5 +237,5 @@ pwn() {
 # give me an index for multiple planes
 I=$(echo $TMUX_PANE | sed 's/[^0-9]*//g')
 
-
+# fzf, but i don't use it
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
