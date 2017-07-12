@@ -17,7 +17,6 @@ fi
 
 # on rhel-ish
 if type yum 2> /dev/null ; then 
-  #cat "http_proxy=http://wwwproxy.sandia.gov:80" >> /etc/yum.conf
   sudo yum install $PACKAGES vim -y || exit $?
 fi
 
@@ -55,4 +54,4 @@ echo  ' otherwise you know exactly what happens...          '
 printf "${NORMAL}"
 
 # get vundle plugins
-env zsh -c " vim +BundleInstall"
+env zsh -c " vim +BundleInstall +qall"
