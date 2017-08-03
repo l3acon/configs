@@ -1,6 +1,6 @@
 set background=dark
 syntax on
-colorscheme twilight256
+colorscheme dues
 
 set cursorline
 " Default Colors for CursorLine
@@ -8,6 +8,7 @@ highlight CursorLine term=none cterm=none ctermbg=Black guibg=Grey20
 
 if has("gui_macvim") || exists('strong')
   set nocompatible              " be iMproved, required
+  highlight Normal ctermbg=none
   filetype off                  " required
   highlight Cursor guifg=white guibg=pink
   highlight iCursor guifg=white guibg=steelblue
@@ -47,6 +48,7 @@ if has("gui_macvim") || exists('strong')
 	"
 	" see :h vundle for more details or wiki for FAQ
 	" Put your non-Plugin stuff after this line
+  let g:ycm_rust_src_path = '$HOME/.cargo/registry/src/github.com-1ecc6299db9ec823'
 endif
 
 
@@ -71,7 +73,7 @@ set lazyredraw                " don't redraw when don't have to
 set showmode
 set showcmd
 set nocompatible              " vim, not vi
-set autoindent                " auto/smart indent
+set autoindent smartindent    " auto/smart indent
 set smarttab                  " tab and backspace are smart
 set tabstop=2                 " 6 spaces
 set shiftwidth=2
@@ -96,6 +98,7 @@ set wildmode=longest:full
 set wildmenu                  " menu has tab completion
 let maplocalleader=','        " all my macros start with ,
 set laststatus=2
+set colorcolumn=80
 
 "  searching
 set incsearch                 " incremental search
@@ -106,6 +109,8 @@ set diffopt=filler,iwhite     " ignore all whitespace and sync
 
 " for spin file type
 au BufRead,BufNewFile *.spin set filetype=spin 
+" for waterslide
+au BufRead,BufNewFile *.ws set filetype=sh 
 au! Syntax spin source $HOME/.vim/syntax/spin.vim
 
 "  backup
@@ -117,8 +122,7 @@ au! Syntax spin source $HOME/.vim/syntax/spin.vim
 " spelling
 if v:version >= 700
   " Enable spell check for text files
-  autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en
-  autocmd BufNewFile,BufRead *.md setlocal spell spelllang=en
+  autocmd Filetype text,c,cpp,md,markdown,bash,rust,text,python setlocal spell spelllang=en
 endif
 
 " mappings
