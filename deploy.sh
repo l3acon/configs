@@ -32,29 +32,36 @@ if [ $(uname -s) = "Darwin" ]; then
 fi
 
 # update and check if we has this repo
-git pull || git clone https://github.com/l3acon/configs.git && cd configs || exit $?
+git pull || ( git clone https://github.com/l3acon/configs.git && cd configs ) || exit $?
 
 ## install oh-my-zsh
-#source zsh-install.bash
-#main
+if [[ ! -d $dir/oh-my-zsh/ ]]; then
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+fi
 
-# move everything home that isn't our git repo
-shopt -s extglob
-cp -aR !(.git|..|.|zsh-install.bash|deploy.sh) $HOME/
+prefix=$(pwd)/home                                                              
+for file in $(find $prefix -type f); do                                         
+  dest=$HOME/"${file#$prefix/}"                                                 
+  rm -f $dest                                                                 
+  # build directories if needed                                                 
+  mkdir -p $(dirname $dest)                                                     
+  # link all the things                                                         
+  ln -s $file $dest                                                             
+done 
 
 # other plugins
 git clone git://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting 
 # vundle
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim 
 
-printf "${BOLD}"
+#printf "${BOLD}"
 echo  'some extras:                                         '
 echo  ' - get yer .homebrew-github-api-token                '
 echo  ' - do YCM: python-dev python3-dev cmake rustc cargo build-essential'
 echo  ' ~/.vim/bundle/YouCompleteMe/install.py --clang-completer --racer-completer'
-echo  ' if this script breaks please add in changes...      '
-echo  ' otherwise you know exactly what happens...          '
-printf "${NORMAL}"
+echo  " chsh -s $(which zsh)"
+#printf "${NORMAL}"
 
 # get vundle plugins
-env zsh -c " vim +BundleInstall +qall"
+source ~/.zshrc
+env zsh -c "vim --cmd 'let strong=1' +BundleInstall +qall"
