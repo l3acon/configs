@@ -1,15 +1,25 @@
 set background=dark
-syntax on
+if !exists("g:syntax_on")
+  syntax enable
+endif
 colorscheme dues
 
 set cursorline
 " Default Colors for CursorLine
 highlight CursorLine term=none cterm=none ctermbg=Black guibg=Grey20
 
+" Disable CursorLine for Insert mode 
+autocmd InsertEnter * set nocursorline
+
+" turn CursorLine highlight back on for all other modes
+autocmd InsertLeave * set cursorline
+
 if has("gui_macvim") || exists('strong')
-  set nocompatible              " be iMproved, required
-  highlight Normal ctermbg=none
   filetype off                  " required
+  if &compatible
+    set nocompatible
+  endif
+  highlight Normal ctermbg=none
   highlight Cursor guifg=white guibg=pink
   highlight iCursor guifg=white guibg=steelblue
   "set guicursor=n-v-c:block-Cursor
@@ -27,7 +37,7 @@ if has("gui_macvim") || exists('strong')
 	Plugin 'VundleVim/Vundle.vim'
 
 	"
-	" ma pluggin's
+	" ma pluggins
 	"
 	"
 	Plugin 'Valloric/YouCompleteMe'
@@ -51,33 +61,31 @@ if has("gui_macvim") || exists('strong')
   let g:ycm_rust_src_path = '$HOME/.cargo/registry/src/github.com-1ecc6299db9ec823'
 endif
 
-
-" Disable CursorLine for Insert mode 
-autocmd InsertEnter * set nocursorline
-
-" turn CursorLine highlight back on for all other modes
-autocmd InsertLeave * set cursorline
-
+" up/down on wrarped lines
 map j gj
 map k gk
 
-set expandtab			" make tabs spaces
+if &compatible                " vim not vi, if not already set 
+  set nocompatible
+endif
+filetype on                   " Enable filetype detection
+filetype indent on            " Enable filetype-specific indenting
+filetype plugin on            " Enable filetype-specific plugins
+set spell spellang=en         " most stuff is english
+set expandtab			            " make tabs spaces
+set smarttab                  " tab and backspace are smart
+set shiftwidth=2
 set noeb vb t_vb=							" turn off the annoying bell
 set ruler                     " show the line number on the bar
 set more                      " use more prompt
 set autoread                  " watch for file changes
 set number                    " line numbers
-"set hidden
 set noautowrite               " don't automagically write on :next
 set lazyredraw                " don't redraw when don't have to
 set showmode
 set showcmd
-set nocompatible              " vim, not vi
 set autoindent smartindent    " auto/smart indent
-set smarttab                  " tab and backspace are smart
-set tabstop=2                 " 6 spaces
-set shiftwidth=2
-set scrolloff=10               " keep at least 5 lines above/below
+set scrolloff=10              " keep at least 5 lines above/below
 set sidescrolloff=5           " keep at least 5 lines left/right
 set history=200
 set backspace=indent,eol,start
@@ -91,14 +99,15 @@ set noerrorbells              " No error bells please
 set shell=zsh
 set fileformats=unix
 set ff=unix
-filetype on                   " Enable filetype detection
-filetype indent on            " Enable filetype-specific indenting
-filetype plugin on            " Enable filetype-specific plugins
 set wildmode=longest:full
 set wildmenu                  " menu has tab completion
 let maplocalleader=','        " all my macros start with ,
 set laststatus=2
 set colorcolumn=80
+
+"don't set tabstop, use softtabstop and shiftwidth instead
+"set tabstop=2                 " 6 spaces
+"set hidden
 
 "  searching
 set incsearch                 " incremental search
@@ -119,11 +128,11 @@ au! Syntax spin source $HOME/.vim/syntax/spin.vim
 "  set viminfo=%100,'100,/100,h,\"500,:100,n~/.viminfo
 "set viminfo='100,f1
 
-" spelling
-if v:version >= 700
-  " Enable spell check for text files
-  autocmd Filetype text,c,cpp,md,markdown,bash,rust,text,python setlocal spell spelllang=en
-endif
+"" spelling
+"if v:version >= 700
+"  " Enable spell check for text files
+"  autocmd Filetype text,c,cpp,md,markdown,bash,rust,python setlocal spell spelllang=en
+"endif
 
 " mappings
 " toggle list mode
