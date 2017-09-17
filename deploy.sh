@@ -38,9 +38,7 @@ if ! $? ; then
 fi
 
 ## install oh-my-zsh
-if [[ ! -d $dir/oh-my-zsh/ ]]; then
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-fi
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
 prefix=$(pwd)/home                                                              
 for file in $(find $prefix -type f); do                                         
@@ -66,5 +64,5 @@ echo  " chsh -s $(which zsh)"
 #printf "${NORMAL}"
 
 # get vundle plugins
-source ~/.zshrc
-env zsh -c "vim --cmd 'let strong=1' +BundleInstall +qall"
+zsh -c "vim --cmd 'let strong=1' +BundleInstall +qall"
+env zsh
