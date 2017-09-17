@@ -34,9 +34,9 @@ fi
 # update and check if we has this repo
 git pull || git clone https://github.com/l3acon/configs.git && cd configs || exit $?
 
-# give me oh-my-zsh
-source zsh-install.bash
-main
+## install oh-my-zsh
+#source zsh-install.bash
+#main
 
 # move everything home that isn't our git repo
 shopt -s extglob
