@@ -33,7 +33,7 @@ fi
 
 # update and check if we has this repo
 git pull
-if [ ! $? ]; then
+if ! $? ; then
   git clone https://github.com/l3acon/configs.git && cd configs
 fi
 
