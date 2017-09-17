@@ -32,7 +32,7 @@ if [ $(uname -s) = "Darwin" ]; then
 fi
 
 # update and check if we has this repo
-git pull || ( git clone https://github.com/l3acon/configs.git && cd configs ) || exit $?
+git clone https://github.com/l3acon/configs.git && cd configs
 
 ## install oh-my-zsh
 if [[ ! -d $dir/oh-my-zsh/ ]]; then
