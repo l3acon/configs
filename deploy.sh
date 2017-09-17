@@ -47,6 +47,7 @@ for file in $(find $prefix -type f); do
   # build directories if needed                                                 
   mkdir -p $(dirname $dest)                                                     
   # link all the things                                                         
+  echo "linking $dest -> ./home/${file#$prefix/}"
   ln -s $file $dest                                                             
 done 
 
