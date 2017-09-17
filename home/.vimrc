@@ -71,7 +71,7 @@ endif
 filetype on                   " Enable filetype detection
 filetype indent on            " Enable filetype-specific indenting
 filetype plugin on            " Enable filetype-specific plugins
-set spell spellang=en         " most stuff is english
+set spell spelllang=en         " most stuff is english
 set expandtab			            " make tabs spaces
 set smarttab                  " tab and backspace are smart
 set shiftwidth=2
