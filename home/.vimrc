@@ -100,7 +100,7 @@ set updatecount=100             " switch every 100 chars
 set complete=.,w,b,u,U,t,i,d    " do lots of scanning on tab completion
 set ttyfast                     " we have a fast terminal
 set noerrorbells                " No error bells please
-set shell=zsh                   " 
+"set shell=zsh                   " 
 set fileformats=unix            " 
 set ff=unix                     " 
 set wildmode=longest:full       " 
