@@ -46,6 +46,7 @@ if has("gui_macvim") || exists('strong')
   "
   Plugin 'Valloric/YouCompleteMe'
   Plugin 'rust-lang/rust.vim'
+  Plugin 'DrawIt'
   Bundle 'cespare/vim-toml'
 
   " All of your Plugins must be added before the following line
@@ -75,7 +76,8 @@ endif
 filetype on                     " Enable filetype detection
 filetype indent on              " Enable filetype-specific indenting
 filetype plugin on              " Enable filetype-specific plugins
-set spell spelllang=en          " most stuff is english
+"set spell spelllang=en          " most stuff is english
+set spell 
 set expandtab                   " make tabs spaces
 set smarttab                    " tab and backspace are smart
 set shiftwidth=2                " 
@@ -115,4 +117,6 @@ set showmatch                   " show matching bracket
 set diffopt=filler,iwhite       " ignore all whitespace and sync
 
 " for waterslide
-au BufRead,BufNewFile *.ws set filetype=sh 
+au BufRead,BufNewFile *.ws set filetype=sh
+" for md
+au BufRead,BufNewFile *.md setlocal nonu nocursorline

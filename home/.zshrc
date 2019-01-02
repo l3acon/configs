@@ -9,6 +9,11 @@ if [ $UNAME_S = "Linux" ]; then
   # give me powerful vim
   alias vim='vim -O --cmd "let strong=1"'
   #alias vim='vim -O'
+  
+  # rustup completions
+  if [ -d ~/.zfunc ]; then
+    fpath+=~/.zfunc
+  fi
 
   # see if X is running
   if xset q &>/dev/null; then

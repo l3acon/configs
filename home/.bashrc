@@ -117,5 +117,5 @@ if ! shopt -oq posix; then
 fi
 
 export PROMPT_COMMAND='history -a; history -r'
-[[ $- != *i* ]] && return
-[[ -z "$TMUX" ]] && exec tmux && exec tmux attach
+#[[ $- != *i* ]] && return
+#[[ -z "$TMUX" ]] && exec tmux && exec tmux attach
