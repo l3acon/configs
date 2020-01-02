@@ -1,4 +1,5 @@
 set background=dark
+
 if !exists("g:syntax_on")
   syntax enable
 endif
@@ -6,13 +7,14 @@ colorscheme dues
 
 set cursorline
 " Default Colors for CursorLine
-highlight CursorLine term=none cterm=none ctermbg=Black guibg=Grey20
+highlight CursorLine term=none cterm=none ctermbg=none guibg=Grey20
+highlight Normal ctermbg=none
 
 if has("autocmd")
   " Uncomment the following to have Vim jump to the last position when
   " reopening a file
   autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-  " Disable CursorLine for Insert mode 
+  " Disable CursorLine for Insert mode
   autocmd InsertEnter * set nocursorline
   " turn CursorLine highlight back on for all other modes
   autocmd InsertLeave * set cursorline
@@ -39,15 +41,18 @@ if has("gui_macvim") || exists('strong')
 
   " let Vundle manage Vundle, required
   Plugin 'VundleVim/Vundle.vim'
-  
+
   "
   " ma pluggins
   "
   "
   Plugin 'Valloric/YouCompleteMe'
-  Plugin 'rust-lang/rust.vim'
-  Plugin 'DrawIt'
-  Bundle 'cespare/vim-toml'
+  "Plugin 'racer-rust/vim-racer'
+  Plugin 'pearofducks/ansible-vim'
+  Plugin 'vim-scripts/DrawIt'
+  Plugin 'rodjek/vim-puppet'
+  "Plugin 'rust-lang/rust.vim'
+  "Bundle 'cespare/vim-toml'
 
   " All of your Plugins must be added before the following line
   call vundle#end()            " required
@@ -63,7 +68,7 @@ if has("gui_macvim") || exists('strong')
   "
   " see :h vundle for more details or wiki for FAQ
   " Put your non-Plugin stuff after this line
-  let g:ycm_rust_src_path = '$HOME/.cargo/registry/src/github.com-1ecc6299db9ec823'
+  let g:ycm_rust_src_path = '$HOME/.cargo/bin'
 endif
 
 " up/down on wrapped lines
@@ -76,11 +81,10 @@ endif
 filetype on                     " Enable filetype detection
 filetype indent on              " Enable filetype-specific indenting
 filetype plugin on              " Enable filetype-specific plugins
-"set spell spelllang=en          " most stuff is english
-set spell 
+set modeline
+set spell spelllang=en          " most stuff is english
 set expandtab                   " make tabs spaces
-set smarttab                    " tab and backspace are smart
-set shiftwidth=2                " 
+set shiftwidth=2                "
 set noeb vb t_vb=               " turn off the annoying bell
 set ruler                       " show the line number on the bar
 set more                        " use more prompt
@@ -90,7 +94,7 @@ set noautowrite                 " don't automagically write on :next
 set lazyredraw                  " don't redraw when don't have to
 set showmode                    " 
 set showcmd                     " 
-set autoindent smartindent      " auto/smart indent
+set autoindent                  " auto/smart indent
 set scrolloff=10                " keep at least 5 lines above/below
 set sidescrolloff=5             " keep at least 5 lines left/right
 set history=200                 " 
@@ -102,7 +106,6 @@ set updatecount=100             " switch every 100 chars
 set complete=.,w,b,u,U,t,i,d    " do lots of scanning on tab completion
 set ttyfast                     " we have a fast terminal
 set noerrorbells                " No error bells please
-set shell=zsh                   " 
 set fileformats=unix            " 
 set ff=unix                     " 
 set wildmode=longest:full       " 
@@ -117,6 +120,11 @@ set showmatch                   " show matching bracket
 set diffopt=filler,iwhite       " ignore all whitespace and sync
 
 " for waterslide
-au BufRead,BufNewFile *.ws set filetype=sh
-" for md
-au BufRead,BufNewFile *.md setlocal nonu nocursorline
+au BufRead,BufNewFile *.ws set filetype=sh 
+
+
+au! FileType python setl nosmartindent
+au! FileType markdown setl nonu
+
+" fix dumb auto-indent for comments
+set fo-=or
