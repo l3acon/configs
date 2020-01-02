@@ -105,6 +105,10 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+alias gst='git status'
+alias vim='vim -O --cmd "let strong=1"'
+alias ip='ip -c'
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -116,6 +120,11 @@ if ! shopt -oq posix; then
   fi
 fi
 
+<<<<<<< HEAD
 export PROMPT_COMMAND='history -a; history -r'
 #[[ $- != *i* ]] && return
 #[[ -z "$TMUX" ]] && exec tmux && exec tmux attach
+=======
+# add rustup binaries
+source $HOME/.cargo/env
+>>>>>>> 198710a44fe1b283d06243b35000a5253af557fc
